@@ -4,17 +4,35 @@ import { Avatar, IconButton, Input } from '@material-ui/core';
 import { SearchOutlined, AttachFile, InsertEmoticon, Mic } from '@material-ui/icons';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+import db from './firebase';
+
+///to grab the route param in the url ... in this case /rooms/:roomId  we'll grab roomId///
+import { useParams } from 'react-router-dom';
+
 function Chat() {
 	const [ input, setInput ] = useState('');
-	const [ seed, setSeed ] = useState('');
+	// const [ seed, setSeed ] = useState('');
+	const { roomId } = useParams();
+	const [ roomName, setRoomName ] = useState('');
+
+	useEffect(
+		() => {
+			if (roomId) {
+				db.collection('rooms').doc(roomId).onSnapshot((snapshot) => {
+					setRoomName(snapshot.data().name);
+				});
+			}
+		},
+		[ roomId ]
+	);
 
 	const createChat = () => {
 		const roomName = prompt('Please Enter Room Name');
 		//DO SOME CLEVER DB STUFF!!
 	};
-	useEffect(() => {
-		setSeed(Math.floor(Math.random() * 5000));
-	}, []);
+	// useEffect(() => {
+	// 	setSeed(Math.floor(Math.random() * 5000));
+	// }, []);
 	const sendMessage = (e) => {
 		e.preventDefault();
 		console.log('you typed input', input);
@@ -23,10 +41,10 @@ function Chat() {
 	return (
 		<div className="chat">
 			<div className="chat__header">
-				<Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+				<Avatar src={`https://avatars.dicebear.com/api/human/${Math.floor(Math.random() * 5000)}.svg`} />
 				<div className="chat__headerInfo">
 					<p className="chat__headerInfo__p">
-						<b>Chat Name</b> Last seen
+						<b>{roomName}</b> Last seen
 					</p>
 				</div>
 				<div className="chat__headerRight">
