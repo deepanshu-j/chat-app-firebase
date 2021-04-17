@@ -8,32 +8,26 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { SearchOutlined } from '@material-ui/icons';
 import SidebarChat from './SidebarChat';
 
-// import db from './firebase';
+import db from './firebase';
 
 function Sidebar() {
-	// const [ rooms, setRooms ] = useState([]);
+	const [ rooms, setRooms ] = useState([]);
 
-	// useEffect(() => {
-	// 	db.collection('rooms').onSnapshot((snapshot) => {
-	// 		const temp=
-	// 			snapshot.docs.map((doc) => {
-	// 				({ id: doc.id, data: doc.data() });
-	// 			});
-	// 		setRooms(temp);
+	useEffect(() => {
+		const unsubscribe = db.collection('rooms').onSnapshot((snapshot) => {
+			setRooms(
+				snapshot.docs.map((doc) => ({
+					id: doc.id,
+					data: doc.data()
+				}))
+			);
+		});
 
-	// 	});
-	// }, []);
-	// useEffect(() => {
-	// 	db.collection('rooms').onSnapshot((snapshot) => {
-	// 		setRooms(
-	// 			snapshot.docs.map((doc) => ({
-	// 				id: doc.id,
-	// 				data: doc.data()
-	// 			}))
-	// 		);
-	// 	});
-	// },[]);
-
+		return () => {
+			unsubscribe();
+		};
+	}, []);
+	//this empty parenthesis is the magic i think//
 	return (
 		<div className="sidebar">
 			<div className="sidebar__header">
@@ -61,13 +55,7 @@ function Sidebar() {
 			<div className="sidebar__chats">
 				<SidebarChat addNewChat />
 
-				{/* {rooms.map((room) => {
-					<Sidebar key={room.id} id={room.id} name={room.data.name} />;
-				})} */}
-				{/* <Sidebar key={123} id={1234} name={'SWigygy'} /> */}
-
-				<SidebarChat />
-				<SidebarChat />
+				{rooms.map((room) => <SidebarChat key={room.id} id={room.id} name={room.data.name} />)}
 			</div>
 		</div>
 	);
