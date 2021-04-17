@@ -1,0 +1,23 @@
+.sidebarChat {
+	display: flex;
+	padding: 1px;
+	cursor: pointer;
+	border: 1px solid #f6f6f6;
+	/* justify-content: space-between; */
+}
+.sidebarChat:hover {
+	background-color: #ebebeb;
+}
+.sidebarChat__info {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	margin-left: 15px;
+}
+.sidebarChat__info__p {
+	margin: 5px;
+}
+.asdf {
+	border: 1px solid black;
+}
