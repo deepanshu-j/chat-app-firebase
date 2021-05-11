@@ -21,3 +21,11 @@
 .asdf {
 	border: 1px solid black;
 }
+a {
+	text-decoration: none !important;
+	color: black;
+}
+
+.sidebarChat__head {
+	font-weight: 600;
+}
